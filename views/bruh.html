@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Simple Map</title>
+    <title>Avoid Everyone</title>
     <meta name="viewport" content="initial-scale=1.0" />
     <meta charset="utf-8" />
     <link
@@ -25,27 +25,155 @@
     </style>
     <script src="/randomPoints.js" defer></script>
   </head>
+  <script
+    src="https://code.jquery.com/jquery-3.5.1.js"
+    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"
+></script>
   <body>
     <div id="map"></div>
-    <script src="/script.js" defer></script>
-    <script>
+    <div id="customControl"></div>
+    
+    <script id="globalVars">
       var map;
+      var myLocation = "san fransisco"; var myLocationMarker;
+      //from heatmapCreation.js
+      var generateHeatMap;
+      //from directions.js
+      var directionsService; var directionsRenderer; var calcRoute;
+      //from script.js
+      var showPosition; var getLocation;
+      //from heatmapCreation.js
+      var heatmap;
+      var distancesPerZoom = [
+        1000,
+        1000,
+        1000,
+        4400000,
+        2200000,
+        1056000,
+        528000,
+        264000,
+        132000,
+        66000,
+        33000,
+        21120,
+        8800,
+        4400,
+        2000,
+        1000,
+        500,
+        250,
+        125,
+        62.5,
+        40,
+        20
+      ];
+      var datapoints = [];
+      var clusteredPoints = {15:datapoints};
+      var currentZoom = 15;
+      var currentCenter = myLocation;
+      var locations;
+
+
+    </script>
+    
+    <script>
+      var customControlDiv = document.getElementById("customControl");
+
+      var MakeControls = function(controlDiv, map) {
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.border = '2px solid #fff';
+        controlUI.style.borderRadius = '3px';
+        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginBottom = '22px';
+        controlUI.style.textAlign = 'center';
+        controlUI.title = 'Click to calculate a new route';
+        controlDiv.appendChild(controlUI);
+
+        // Set CSS for the control interior.
+        var controlText = document.createElement('div');
+        controlText.style.color = 'rgb(25,25,25)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '16px';
+        controlText.style.lineHeight = '38px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '5px';
+        controlText.innerHTML = 'Calculate Route';
+        controlUI.appendChild(controlText);
+
+
+        controlUI.addEventListener('click', function() {
+          calcRoute(myLocation);
+        });      
+      
+      }
+      
       function initMap() {
         map = new google.maps.Map(document.getElementById("map"), {
           center: { lat: 37.787, lng: -122.407 },
-          zoom: 15
+          zoom: 15,
+          streetViewControl: false,
+          fullscreenControl: false,
+          mapTypeControl: false,
+          minZoom: 3
+        });
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);
+        
+        var customControl = new MakeControls(customControlDiv, map);
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(customControlDiv);
+        map.addListener("zoom_changed", function(){
+          currentZoom = map.getZoom();
+          heatmap.set("radius", 50 * (1000/distancesPerZoom[currentZoom]) + 6/(currentZoom));
+          currentCenter = map.getCenter();
+          clusterPoints();
         });
       }
-    </script>
+
+      function getCookie(cname) {
+        var id = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(id) == 0) {
+            return c.substring(id.length, c.length);
+          }
+        }
+        return "";
+      }
+      var cookieId = getCookie("id");
+
+      function setCookie(cname, cvalue){
+        document.cookie = cname + "=" + cvalue + ";path=/";
+      }
+
+      function create_UUID(){
+        var dt = new Date().getTime();
+        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = (dt + Math.random()*16)%16 | 0;
+            dt = Math.floor(dt/16);
+            console.log(uuid);
+            return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+        });
+        console.log(uuid);
+        return uuid;
+      }
+      </script>     
     <script
       type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4tJcLbYZC__NvchePTf_bjpX8lJaZr4M&libraries=visualization&callback=initMap"
     ></script>
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.js"
-      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-      crossorigin="anonymous"
-    ></script>
+
+    <script src="/directions.js" defer></script>
+    <script src="/script.js" defer></script>
     <script src="/heatmapCreation.js" defer></script>
+    
   </body>
 </html>

@@ -7,11 +7,26 @@ const bodyParser = require('body-parser')
 const adapter = new FileSync('.data/db.json')
 const db = low(adapter)
 
+const groupBy = key => array =>
+  array.reduce((objectsByKeyValue, obj) => {
+    const value = obj[key];
+    objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
+    return objectsByKeyValue;
+  }, {});
+
+const groupByUser = groupBy("id");
+
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use(express.static('simulatedPoints'));
 
 db.defaults({points:[]}).write();
+
+function getUniqueLocations(){
+  var locationsByUser = groupByUser(getLocations());
+  console.log(locationsByUser);
+  return Object.keys(locationsByUser).map(key => locationsByUser[key][locationsByUser[key].length - 1])
+}
 
 function appendLocation(location){
   db.get('points').push(location).write();
@@ -26,7 +41,7 @@ app.get("/", (req, res) => {
   })
 
 app.get("/rest/locations", (req, res) => {
-  var locations = getLocations();
+  var locations = getUniqueLocations();
   console.log("GET /locations =>" + JSON.stringify(locations));
   res.json(locations);
 });

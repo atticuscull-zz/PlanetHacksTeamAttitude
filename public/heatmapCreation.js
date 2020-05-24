@@ -1,23 +1,45 @@
 var Weight = 1;
 
-var datapoints = [];
-
 var addDatapoint = function(latitude, longitude, heaviness = Weight) {
   datapoints.push({
     location: new google.maps.LatLng(latitude, longitude),
     weight: heaviness
   });
+}
+
+for(var i = 0; i < 1000; i++) {
+  addDatapoint(...genPoint());
+}
+
+generateHeatMap = function(){
+  for(var i = 0; i < locations.length; i++){
+    addDatapoint(locations[i]["lat"], locations[i]["lng"]);
+  }
+  heatmap = new google.maps.visualization.HeatmapLayer({
+    data: datapoints,
+    maxIntensity: 2,
+    radius: 50
+  });
+  
+  heatmap.setMap(map);
 };
 
-addDatapoint(37.787, -122.407);
-addDatapoint(37.786, -122.402);
-addDatapoint(37.776, -122.428);
-addDatapoint(37.798, -122.386);
-
-var heatmap = new google.maps.visualization.HeatmapLayer({
-  data: datapoints,
-  maxIntensity: 5,
-  radius: 30
+$.get("/rest/locations").done(function(_locations) {
+  locations = _locations
+  generateHeatMap();
 });
 
-heatmap.setMap(map);
+
+refreshHeatMap = function() {
+  heatmap = new google.maps.visualization.HeatmapLayer({
+    data: clusterPoints[currentZoom].forEach(function(e) {
+      return ({
+      location: new google.maps.LatLng(e.lat, e.lng), 
+      weight: e.weight
+      });
+    }),
+    maxIntensity: 2,
+    radius: 50
+  });
+  //heatmap.setMap(map);
+}
