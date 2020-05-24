@@ -1,34 +1,46 @@
-getLocation();
-function getLocation() {
+
+getLocation = function() {
+  console.log("bruhbruhbruh")
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
   } else {
     console.log("Geolocation is not supported by this browser.");
   }
 }
-function showPosition(position) {
+
+
+showPosition = function(position) {
+  var currentTime = new Date();
+
+  if(cookieId == ""){
+    setCookie("id", create_UUID());
+  }
   var latlon = {
     lat: position.coords.latitude,
     lng: position.coords.longitude
   };
-  var locations;
-  console.log(latlon);
+
+  var userData = {
+    id: cookieId,
+    lat: position.coords.latitude,
+    lng: position.coords.longitude,
+    time: currentTime.getTime()
+  }
+  console.log(userData);
   map.setCenter(latlon);
   $.ajax({
     url: "/rest/location",
     type: "POST",
     contentType: "application/json",
-    data: JSON.stringify(latlon),
+    data: JSON.stringify(userData),
     success: function() {
       console.log("saved location");
-      console.log(JSON.stringify(latlon));
-    }
+      console.log(JSON.stringify(userData));
+     }
   });
-  //simulatePoints(300);
-  //makeHeatMap();
-  $.get("/rest/locations").done(function(_locations) {
-    locations = _locations;
-    console.log(locations);
-  });
+  myLocation = latlon;
+  //console.log(myLocation, latlon);
+  myLocationMarker = new google.maps.Marker({map: map, position: latlon, title: 'You'});
   return latlon;
 }
+getLocation();
