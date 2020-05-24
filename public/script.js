@@ -1,6 +1,5 @@
 
 getLocation = function() {
-  console.log("bruhbruhbruh")
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
   } else {
@@ -26,7 +25,6 @@ showPosition = function(position) {
     lng: position.coords.longitude,
     time: currentTime.getTime()
   }
-  console.log(userData);
   map.setCenter(latlon);
   $.ajax({
     url: "/rest/location",
@@ -34,8 +32,6 @@ showPosition = function(position) {
     contentType: "application/json",
     data: JSON.stringify(userData),
     success: function() {
-      console.log("saved location");
-      console.log(JSON.stringify(userData));
      }
   });
   myLocation = latlon;
