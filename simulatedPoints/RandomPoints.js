@@ -3,8 +3,9 @@ var collectionPoints = 20;
 var random;
 
 //console.log("hi" + toString(myLocation));
-var latmin = 37.776; var latmax = 37.798;
-var lngmin = -122.386; var lngmax = -122.428;
+var centerp = [37.787, -122.422];
+var latmin = centerp[0] - .011; var latmax = centerp[0] + .011;
+var lngmin = centerp[1] - .021; var lngmax = centerp[1] + .021;
 var attractPoints = [];
 
 random = function(minimum, maximum) {
