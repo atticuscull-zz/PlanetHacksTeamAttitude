@@ -8,6 +8,8 @@ const adapter = new FileSync('db.json')
 const db = low(adapter)
 
 app.use(bodyParser.json());
+app.use(express.static('public'));
+app.use(express.static('simulatedPoints'));
 
 db.defaults({points:[]}).write();
 
@@ -20,7 +22,7 @@ function getLocations(){
 }
 
 app.get("/", (req, res) => {
-    res.sendFile(__dirname + '/bruh.html')
+    res.sendFile(__dirname + '/views/bruh.html')
   })
 
 app.get("/rest/locations", (req, res) => {

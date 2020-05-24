@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <link
+      rel="shortcut icon"
+      href="https://cdn.glitch.com/8b9d0fdc-7966-4011-99da-57f1aff9b50f%2Fmine.jpg?v=1590299912533"
+    />
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+        width: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script src="/randomPoints.js" defer></script>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="/script.js" defer></script>
+    <script>
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: 37.787, lng: -122.407 },
+          zoom: 15
+        });
+      }
+    </script>
+    <script
+      type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4tJcLbYZC__NvchePTf_bjpX8lJaZr4M&libraries=visualization&callback=initMap"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"
+    ></script>
+    <script src="/heatmapCreation.js" defer></script>
+  </body>
+</html>
