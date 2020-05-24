@@ -4,7 +4,7 @@ const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
 const bodyParser = require('body-parser')
 
-const adapter = new FileSync('db.json')
+const adapter = new FileSync('.data/db.json')
 const db = low(adapter)
 
 app.use(bodyParser.json());
