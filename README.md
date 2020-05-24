@@ -7,7 +7,7 @@ A map of populated areas and places to go
 
 On the front-end,
 
-- A website using the google map API to show a heatmap of populated areas
+- A website using the google maps API to show a heatmap of populated areas
 - You can use the Calculate Route button to give you a destination that is not populated
 
 
