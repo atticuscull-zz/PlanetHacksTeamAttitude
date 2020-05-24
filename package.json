@@ -2,7 +2,7 @@
   "name": "planethacksteamattitude",
   "version": "1.0.0",
   "description": "",
-  "main": "gmaps-heatmap.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/atticuscull/PlanetHacksTeamAttitude#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "lowdb": "^1.0.0"
   }
 }
