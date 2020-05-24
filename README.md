@@ -1,7 +1,7 @@
 # [avoid-everyone](https://avoid-everyone.glitch.me/)
 
 A map of populated areas and places to go
-
+(Click ^^ to visit the webpage)
 
 ## Population Heatmap
 
