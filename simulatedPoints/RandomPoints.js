@@ -2,6 +2,7 @@ var Spread = .8;
 var collectionPoints = 20;
 var random;
 
+//console.log("hi" + toString(myLocation));
 var latmin = 37.776; var latmax = 37.798;
 var lngmin = -122.386; var lngmax = -122.428;
 var attractPoints = [];
